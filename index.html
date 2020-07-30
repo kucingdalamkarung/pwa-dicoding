@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FootballApp</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="/src/css/materialize.min.css" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/src/images/favicon.ico">
+    <style>
+        .inline {
+            display: flex;
+            align-content: center;
+            align-items: center;
+        }
+
+        .inline>* {
+            margin: 0 10px;
+        }
+
+        .loading {
+            background: #ffecb3;
+            border: 1px solid #ffa000;
+            width: 150px;
+            margin: 20px auto;
+            display: none;
+            justify-content: center;
+        }
+
+        .underline-hover:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 900px) and (min-width: 400px) {
+            .inline {
+                display: flex;
+                flex-direction: column;
+                align-content: center;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="grey darken-3" role="navigation">
+        <div class="nav-wrapper container">
+            <a href="#" class="brand-logo" id="logo-container" style="font-size: 16pt;">Football <span
+                    class="amber-text darken-2" style="font-weight: bold;">APP</span></a>
+            <a href="#" class="sidenav-trigger" data-target="nav-mobile">☰</a>
+
+            <ul class="topnav right hide-on-med-and-down">
+
+            </ul>
+            <ul class="sidenav" id="nav-mobile"></ul>
+        </div>
+    </nav>
+
+    <div class="loading">
+        <p class="grey-text darken-4">Loading...</p>
+    </div>
+
+    <div class="container" id="body-content"></div>
+
+    <script src="/src/js/materialize.min.js"></script>
+    <script src="/src/js/nav.js"></script>
+    <script src="/src/js/api.js"></script>
+
+    <script>
+        function registerServiceWorker() {
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register('/sw.js')
+                    .catch(err => console.log("Error while registering service worker. ERROR:" + err));
+            }
+        }
+
+        function requestNotificationPermission() {
+            if ("Notification" in window) {
+                Notification.requestPermission()
+                    .catch(err => console.log("Error while requesting notification permission. ERROR: " + err));
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            registerServiceWorker();
+            requestNotificationPermission();
+        });
+    </script>
+</body>
+
+</html>
