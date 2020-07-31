@@ -141,27 +141,28 @@ function getTeamDetail(id) {
     const teamURL = `${BASE_URL}teams/${id}`;
     loadingIndicator.style.display = "flex";
 
-    apiService(teamURL)
-        .then(status)
-        .then(json)
-        .then(data => {
-            let teamData = "";
-            let competitions = [];
-            loadingIndicator.style.display = "none";
+    return new Promise((resolve, reject) => {
+        apiService(teamURL)
+            .then(status)
+            .then(json)
+            .then(data => {
+                let teamData = "";
+                let competitions = [];
+                loadingIndicator.style.display = "none";
 
-            if (data) {
-                data.activeCompetitions.forEach(cmp => {
-                    competitions.push(cmp.name);
-                });
+                if (data) {
+                    data.activeCompetitions.forEach(cmp => {
+                        competitions.push(cmp.name);
+                    });
 
-                let cmpData = competitions.join(",");
+                    let cmpData = competitions.join(",");
 
-                let squadData = "";
+                    let squadData = "";
 
-                data.squad.forEach(sqd => {
-                    squadData += `
+                    data.squad.forEach(sqd => {
+                        squadData += `
                         <tr>
-                            <td>${sqd.name}</td>
+                            <td><a href="./player.html?id=${sqd.id}">${sqd.name}</a></td>
                             <td class="center-align">${sqd.nationality}</td>
                             <td class="center-align">${sqd.countryOfBirth}</td>
                             <td class="center-align">${sqd.position}</td>
@@ -169,19 +170,19 @@ function getTeamDetail(id) {
                             <td class="center-align">${sqd.role}</td>
                         </tr>
                     `;
-                });
+                    });
 
-                let squad = `
+                    let squad = `
                     <p style="font-size: 16pt; font-weight: bold; margin-top: 20px;" class="grey-text darken-4 center-align">Current Squad</p>
                     <table class="responsive-table striped">
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Nationality</th>
-                                <th>Birth</th>
-                                <th>Position</th>
-                                <th>Shirt Number</th>
-                                <th>Role</th>
+                                <th class="center-align">Nationality</th>
+                                <th class="center-align">Birth</th>
+                                <th class="center-align">Position</th>
+                                <th class="center-align">Shirt Number</th>
+                                <th class="center-align">Role</th>
                             </tr>
                         </thead>
 
@@ -191,7 +192,7 @@ function getTeamDetail(id) {
                     </table>
                 `;
 
-                teamData = `
+                    teamData = `
                 <div class="row" style="margin-top: 20px;">
                     <div>
                         <div class="col s12 m3 l3">
@@ -205,7 +206,7 @@ function getTeamDetail(id) {
                                     <p><span style="font-weight: bold;">Venue: </span> ${data.venue}</p>
                                     <p><span style="font-weight: bold;">Address: </span> ${data.address}</p>
                                     <p><span style="font-weight: bold;">Phone: </span> ${data.phone}</p>
-                                    <p><span style="font-weight: bold;">Website: </span> ${data.website}</p>
+                                    <p><span style="font-weight: bold;">Website: </span> <a href="${data.website}">${data.website}</a></p>
                                 </div>
                                 <div class="col s12 m6 l6">
                                     <p><span style="font-weight: bold;">Email: </span> ${data.email}</p>
@@ -222,9 +223,43 @@ function getTeamDetail(id) {
                     </div>
                 </div>
                 `;
-            }
+                }
 
-            document.getElementById("body-content").innerHTML += teamData;
+                document.getElementById("body-content").innerHTML += teamData;
+                resolve(data);
+            })
+            .catch(error);
+    })
+}
+
+function getPlayerDetail(id) {
+    const playerUrl = `${BASE_URL}players/${id}`;
+    loadingIndicator.style.display = "flex";
+
+    apiService(playerUrl)
+        .then(status)
+        .then(json)
+        .then(data => {
+            loadingIndicator.style.display = "none";
+            document.getElementById("body-content").innerHTML = `
+                <div class="row">
+                    <div class="col s12">
+                        <p style="font-size: 16pt; font-weight: bold; margin-top: 20px;" class="grey-text darken-4 center-align">Player Profile</p>
+                            <div class="card white">
+                                <div class="card-content grey-text darken-4">
+                                    <p class="flow-text center-align"><span style="font-weight: bold;">${data.name}</p></br>
+                                    <p><span style="font-weight: bold;">First name: </span> ${data.firstName}</p>
+                                    <p><span style="font-weight: bold;">Last name: </span> ${data.lastName == null ? "-" : data.lastName}</p>
+                                    <p><span style="font-weight: bold;">Date of birth: </span> ${data.dateOfBirth}</p>
+                                    <p><span style="font-weight: bold;">Country birth: </span> ${data.countryOfBirth}</p>
+                                    <p><span style="font-weight: bold;">Nationality: </span> ${data.nationality}</p>
+                                    <p><span style="font-weight: bold;">Shirt number: </span> ${data.shirtNumber == null ? "-" : data.shirtNumber}</p>
+                                    <p><span style="font-weight: bold;">Position: </span> ${data.position}</p>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            `;
         })
         .catch(error);
 }

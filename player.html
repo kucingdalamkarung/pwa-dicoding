@@ -101,20 +101,10 @@
             const urlParams = new URLSearchParams(window.location.search);
             const param = Number(urlParams.get("id"));
             if (param) {
-                // let item = getTeamDetail(param);
-                // item.then((data) => {
-                //     createData("team", data);
-                // })
-                getTeamDetail(param);
+                getPlayerDetail(param);
             } else {
-                document.getElementById("body-content").innerHTML = `<p class="center-align" style="margin-top: 20px;">Team detail not available.</p>`;
+                document.getElementById("body-content").innerHTML = `<p class="center-align" style="margin-top: 20px;">Player detail not available.</p>`;
             }
-
-            const btn_fav = document.querySelector("#save");
-            btn_fav.addEventListener("click", (event) => {
-                event.preventDefault();
-                // TODO: logic for save data
-            });
         });
     </script>
 </body>
