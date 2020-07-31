@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     let elems = document.querySelectorAll(".sidenav");
     M.Sidenav.init(elems);
     loadnav();
@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 } else if (page == "match") {
                     getMatch();
                 }
-                
+
                 if (this.status == 200) {
                     content.innerHTML = xhttp.responseText;
                 } else if (this.status == 404) {
