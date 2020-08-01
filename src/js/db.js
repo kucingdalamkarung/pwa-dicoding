@@ -45,11 +45,50 @@ function checkData(type, name) {
 }
 
 function getAllData() {
+    return new Promise(function (resolve, reject) {
+        Promise.all([
+            idbPromise.then(db => {
+                const tx = db.transaction("team_fav", "readonly");
+                const store = tx.objectStore("team_fav");
 
+                return store.getAll();
+            }),
+            idbPromise.then(db => {
+                const tx = db.transaction("player_fav", "readonly");
+                const store = tx.objectStore("player_fav");
+
+                return store.getAll();
+            }),
+        ])
+            .then(res => {
+                resolve(res);
+            })
+    })
 }
 
 function getDataById(type, id) {
+    return new Promise(function (resolve, reject) {
+        idbPromise.then(db => {
+            let storename = "";
 
+            if (type === "team") {
+                storename = "team_fav";
+            } else if (type === "player") {
+                storename = "player_fav";
+            }
+
+            const tx = db.transaction(storename, "readonly");
+            const store = tx.objectStore(storename);
+
+            return store.get(id);
+        })
+            .then(res => {
+                resolve(res);
+            })
+            .catch(err => {
+                console.log("Get data failed.");
+            });
+    })
 }
 
 function createData(type, data) {
@@ -94,3 +133,4 @@ function deleteData(type, id) {
         console.log("Item deleted");
     });
 }
+

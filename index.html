@@ -21,6 +21,17 @@
             margin: 0 10px;
         }
 
+        .inline2 {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+        }
+
+        .inline2>* {
+            margin: 0 10px;
+        }
+
         .loading {
             background: #ffecb3;
             border: 1px solid #ffa000;
@@ -37,6 +48,14 @@
 
         @media screen and (max-width: 900px) and (min-width: 400px) {
             .inline {
+                display: flex;
+                flex-direction: column;
+                align-content: center;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .inline2 {
                 display: flex;
                 flex-direction: column;
                 align-content: center;
@@ -96,9 +115,9 @@
                         applicationServerKey: urlBase64ToUint8Array("BDyzryZ-NuYhwb9WmgXENhmWTCN11VX_XjWHnGL_7daiQj8RSHWXl6PvJDMtjwgSo7a7z4jW5Br4htB71R9w-Hw")
                     })
                         .then((subscribe) => {
-                            console.log('Berhasil melakukan subscribe dengan endpoint: ', subscribe.endpoint);
-                            console.log('Berhasil melakukan subscribe dengan p256dh key: ', btoa(String.fromCharCode.apply(null, new Uint8Array(subscribe.getKey('p256dh')))));
-                            console.log('Berhasil melakukan subscribe dengan auth key: ', btoa(String.fromCharCode.apply(null, new Uint8Array(subscribe.getKey('auth')))));
+                            // console.log('Berhasil melakukan subscribe dengan endpoint: ', subscribe.endpoint);
+                            // console.log('Berhasil melakukan subscribe dengan p256dh key: ', btoa(String.fromCharCode.apply(null, new Uint8Array(subscribe.getKey('p256dh')))));
+                            // console.log('Berhasil melakukan subscribe dengan auth key: ', btoa(String.fromCharCode.apply(null, new Uint8Array(subscribe.getKey('auth')))));
                         })
                         .catch(e => {
                             console.error('Tidak dapat melakukan subscribe ', e.message);

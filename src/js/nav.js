@@ -41,8 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
             if (this.readyState == 4) {
                 if (page === "home") {
                     getStandings();
-                } else if (page == "match") {
+                } else if (page === "match") {
                     getMatch();
+                } else if (page === "favorite") {
+                    showFavorite();
                 }
 
                 if (this.status == 200) {

@@ -102,9 +102,9 @@
                         applicationServerKey: urlBase64ToUint8Array("BDyzryZ-NuYhwb9WmgXENhmWTCN11VX_XjWHnGL_7daiQj8RSHWXl6PvJDMtjwgSo7a7z4jW5Br4htB71R9w-Hw")
                     })
                         .then((subscribe) => {
-                            console.log('Berhasil melakukan subscribe dengan endpoint: ', subscribe.endpoint);
-                            console.log('Berhasil melakukan subscribe dengan p256dh key: ', btoa(String.fromCharCode.apply(null, new Uint8Array(subscribe.getKey('p256dh')))));
-                            console.log('Berhasil melakukan subscribe dengan auth key: ', btoa(String.fromCharCode.apply(null, new Uint8Array(subscribe.getKey('auth')))));
+                            // console.log('Berhasil melakukan subscribe dengan endpoint: ', subscribe.endpoint);
+                            // console.log('Berhasil melakukan subscribe dengan p256dh key: ', btoa(String.fromCharCode.apply(null, new Uint8Array(subscribe.getKey('p256dh')))));
+                            // console.log('Berhasil melakukan subscribe dengan auth key: ', btoa(String.fromCharCode.apply(null, new Uint8Array(subscribe.getKey('auth')))));
                         })
                         .catch(e => {
                             console.error('Tidak dapat melakukan subscribe ', e.message);
@@ -133,19 +133,18 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const param = Number(urlParams.get("id"));
+        const saved = Boolean(urlParams.get("saved"));
 
-        const item = getTeamDetail(param);
+        let item = null;
         let isSaved = false;
 
-        if (param) {
-            getTeamDetail(param);
-        } else {
+        if (!param) {
             document.getElementById("body-content").innerHTML = `<p class="center-align" style="margin-top: 20px;">Team detail not available.</p>`;
         }
 
         checkData("team", param)
             .then(data => {
-                if (data) {
+                if (data || saved) {
                     btn_fav.childNodes[1].innerText = "delete";
                     isSaved = true;
                 } else {
@@ -155,6 +154,12 @@
             })
             .catch(err => {
             });
+        
+            if (saved || isSaved) {
+                item = getSavedArticleById("team", param);
+            } else {
+                item = getTeamDetail(param);
+            }
 
         const btn_fav = document.querySelector("#save");
         btn_fav.addEventListener("click", (event) => {
@@ -165,7 +170,7 @@
                     location.reload();
                 } else {
                     deleteData("team", param);
-                    location.reload();
+                    window.location = "index.html";
                 }
             });
         });
